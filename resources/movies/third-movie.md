@@ -1,8 +1,5 @@
-<h1>
-    My Movie
-</h1>
+# Third Movie
 
-<p>
     Lorem ipsum dolor sit amet, consectetur cupidatat laborum adipisicing dolor cillum do dolor in consequat quis
     aliquip sint et Lorem tempor ex exercitation id. Nisi irure pariatur anim eiusmod sunt amet dolore adipisicing. Non
     non quis in nulla elit minim consequat.
@@ -35,4 +32,3 @@
     ullamco eu sit aliquip aliqua ut tempor minim officia. Voluptate pariatur officia id tempor. Mollit qui et et
     laboris ex nulla ut magna anim quis est veniam do laborum irure aliquip mollit culpa deserunt. Fugiat magna duis
     cillum amet velit dolore consectetur aliquip.
-</p>
