@@ -1,4 +1,7 @@
-# My Movie
+---
+title: My Movie
+summary: Lorem ipsum dolor sit amet, consectetur cupidatat laborum adipisicing dolor cillum do dolor in consequat quis
+---
 
     Lorem ipsum dolor sit amet, consectetur cupidatat laborum adipisicing dolor cillum do dolor in consequat quis
     aliquip sint et Lorem tempor ex exercitation id. Nisi irure pariatur anim eiusmod sunt amet dolore adipisicing. Non
