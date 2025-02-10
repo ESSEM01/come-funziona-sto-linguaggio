@@ -7,48 +7,12 @@
 |
 */
 
-import { Exception } from '@adonisjs/core/exceptions'
-import app from '@adonisjs/core/services/app'
 import router from '@adonisjs/core/services/router'
-import fs from 'node:fs/promises'
-import { MarkdownFile } from '@dimerapp/markdown'
-import { toHtml } from '@dimerapp/markdown/utils'
-import { MovieService } from '#services/movie_service'
+const MoviesController = () => import('#controllers/movies_controller') 
 
-router.get('/', async (ctx) => {
-    const slugs = await  MovieService.getSlugs()
-    const movies: Record<string, any>[] = []
+router.get('/', [MoviesController, 'index']).as('home')
 
-    
-    for (const slug of slugs) {
-        const md = await MovieService.read(slug)
-
-        movies.push({
-            tite: md.frontmatter.title,
-            summary: md.frontmatter.summary,
-            slug,
-        }) 
-
-    }
-
-
-    return ctx.view.render('pages/home', { movies })
-}).as('home')
-
-router
-    .get('/movies/:slug', async (ctx) => {
- 
-           const md = await MovieService.read(ctx.params.slug)
-
-            const movie = toHtml(md).contents
-            ctx.view.share({ movie, md })
-
-        
-
-        return ctx.view.render('pages/movies/show')
-    }).as('movies.show')
-
-    .where('slug', router.matchers.slug())
+router.get('/movies/:slug', [MoviesController, 'show']).as('movies.show').where('slug', router.matchers.slug())
 
 // router.get('/movies', () => {}).as('movies.index')
 // router.get('/movies/single-movie', () => {}).as('movies.show')
