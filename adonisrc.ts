@@ -48,10 +48,10 @@ export default defineConfig({
   |
   */
   preloads: [
-      () => import('#start/routes'), 
-      () => import('#start/kernel'), 
-      () => import('#start/globals')
-    ],
+    () => import('#start/routes'),
+    () => import('#start/kernel'),
+    () => import('#start/globals')
+  ],
 
   /*
   |--------------------------------------------------------------------------

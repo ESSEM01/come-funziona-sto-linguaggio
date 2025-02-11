@@ -10,17 +10,17 @@
 
 <div class="flex flex-wrap -mx-6">
 
-  {{-- @each (movie in movies)
+  @each (movie in movies)
   <div class="w-full lg:w-1/3 px-3">
     @!movie.card({ movie, class: 'w-full', stateExample})
   </div>
-  @endeach --}}
+  @endeach
 
-  <div class="w-full lg:w-1/3 px-3">
+  {{-- <div class="w-full lg:w-1/3 px-3">
       <ul class="list">
 
       </ul>
-  </div>
+  </div> --}}
 
 </div>
 
@@ -31,7 +31,7 @@
     @end
 </div>
 
-<script>
+{{-- <script>
   $(document).ready(function() {
     $('#flush').on('click', function(e) {
       e.preventDefault();
@@ -39,13 +39,13 @@
 
         for (const element of data) {
             console.log(element);
-            $('.list').append(`<li>${element.title}</li>`);
+            $('.list').append(`<li>${[element.title, element.abstract]}</li>`);
         }
           
       } ) 
     });
   });
 
-</script>
+</script> --}}
 
 @end
