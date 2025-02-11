@@ -12,8 +12,12 @@ const MoviesController = () => import('#controllers/movies_controller')
 
 router.get('/', [MoviesController, 'index']).as('home')
 
-router.get('/movies/:slug', [MoviesController, 'show']).as('movies.show').where('slug', router.matchers.slug())
+router
+    .get('/movies/:slug', [MoviesController, 'show'])
+    .as('movies.show')
+    .where('slug', router.matchers.slug())
 
+    router.get('/flush', [MoviesController, 'flushCache'])
 // router.get('/movies', () => {}).as('movies.index')
 // router.get('/movies/single-movie', () => {}).as('movies.show')
 // router.get('/movies/create', () => {}).as('movies.create')

@@ -1,4 +1,5 @@
 import Movie from '#models/movie'
+import cache from '#services/cache_service'
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class MoviesController {
@@ -12,6 +13,11 @@ export default class MoviesController {
     const movie = await Movie.find(params.slug)
 
     return view.render('pages/movies/show', { movie })
+  }
+
+  async flushCache() {
+    const movies = await Movie.all()
+    return movies
   }
 
 }
