@@ -9,42 +9,45 @@
 
 
 <div class="flex flex-wrap -mx-6">
-
-  @each (movie in movies)
   <div class="w-full lg:w-1/3 px-3">
-    @!movie.card({ movie, class: 'w-full', stateExample})
+
+    <ul class="list">
+
+    </ul>
+
   </div>
-  @endeach
-
-  {{-- <div class="w-full lg:w-1/3 px-3">
-      <ul class="list">
-
-      </ul>
-  </div> --}}
 
 </div>
 
 <div class="fixed bottom-0 right-3 flex gap-3">
 
-    @button({href: '/test', class: 'rounded-b-none', id: 'flush'})
-    Flush button
-    @end
+  @button({href: '/test', class: 'rounded-b-none', id: 'flush'})
+  Flush button
+  @end
+
+  <button id="add_film">Aggiungi film</button>
 </div>
 
-{{-- <script>
-  $(document).ready(function() {
-    $('#flush').on('click', function(e) {
-      e.preventDefault();
-      $.get('/flush', function(data) {
-
-        for (const element of data) {
-            console.log(element);
-            $('.list').append(`<li>${[element.title, element.abstract]}</li>`);
-        }
-          
-      } ) 
-    });
+<script>
+  $('#flush').on('click', function (e) {
+    e.preventDefault();
+    load_film()
   });
+
+  $('#add_film').on('click', function (e) {
+    e.preventDefault();
+    // aggiungi film nel file
+
+    // load_film()
+  });
+
+  function load_film() {
+    $.get('/flush', function (data) {
+      for (const element of data) {
+        $('.list').append(`<li>${element.title}</li>`);
+      }
+    })
+  }
 
 </script> --}}
 
