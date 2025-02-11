@@ -17,7 +17,7 @@
   @endeach --}}
 
   <div class="w-full lg:w-1/3 px-3">
-      <ul class="">
+      <ul class="list">
 
       </ul>
   </div>
@@ -36,13 +36,10 @@
     $('#flush').on('click', function(e) {
       e.preventDefault();
       $.get('/flush', function(data) {
-        console.log(data);
 
-        for (const key in data) {
-          if (Object.hasOwnProperty.call(data, key)) {
-            const element = data[key];
-            $
-          }
+        for (const element of data) {
+            console.log(element);
+            $('.list').append(`<li>${element.title}</li>`);
         }
           
       } ) 
