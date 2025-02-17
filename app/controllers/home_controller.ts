@@ -24,5 +24,13 @@ export default class HomeController {
         
     }
 
+    async updateUser(ctx: HttpContext) {
+        console.log(ctx.request.all())
+        const user = await User.findOrFail(ctx.params.id)
+        user.merge(ctx.request.all())
+        user.save()
+        return user
+    }
+
     
 }

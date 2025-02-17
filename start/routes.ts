@@ -22,6 +22,8 @@ router
     router.get('/flush', [MoviesController, 'flushCache'])
     router.get('/user', [HomeController, 'viewUsers'])
     router.post('/user', [HomeController, 'addUser'])
+    router.put('/user', [HomeController, 'updateUser'])
+
 // router.get('/movies', () => {}).as('movies.index')
 // router.get('/movies/single-movie', () => {}).as('movies.show')
 // router.get('/movies/create', () => {}).as('movies.create')
