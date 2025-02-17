@@ -8,13 +8,96 @@
 </h1>
 
 
-<div class="flex flex-wrap -mx-6">
+<div class="flex flex-wrap -mx-5">
 
-  @each (movie in movies)
+  <form action="/user" method="POST" id="add_user_form">
+    <div class="space-y-12">
+      <div class="border-b border-gray-900/10 pb-12">
+        <h2 class="text-base/7 font-semibold text-gray-900">Personal Information</h2>
+        <p class="mt-1 text-sm/6 text-gray-600">Use a permanent address where you can receive mail.</p>
+
+        <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+          <div class="sm:col-span-3">
+            <label for="first-name" class="block text-sm/6 font-medium text-gray-900">Role id</label>
+            <div class="mt-2">
+              <input type="number" name="roleId" id="first-name"
+                class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+            </div>
+          </div>
+
+          <div class="sm:col-span-3">
+            <label for="last-name" class="block text-sm/6 font-medium text-gray-900">Full name</label>
+            <div class="mt-2">
+              <input type="text" name="fullName" id="full-name"
+                class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+            </div>
+          </div>
+
+          <div class="sm:col-span-4">
+            <label for="email" class="block text-sm/6 font-medium text-gray-900">Email address</label>
+            <div class="mt-2">
+              <input id="email" name="email" type="email"
+                class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+            </div>
+          </div>
+
+
+          <div class="sm:col-span-4">
+            <label for="password" class="block text-sm/6 font-medium text-gray-900">Password</label>
+            <div class="mt-2">
+              <input id="password" name="password" type="password"
+                class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+    {{-- ADD USER --}}
+    <div class="mt-6 flex items-center justify-end gap-x-6">
+      <button type="submit" id="add_user"
+        class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Add
+        user</button>
+    </div>
+  </form>
+
+  {{-- <div id="user_table" class="flex flex-row flex-wrap basis-full mb-10">
+    @each(user in users)
+    <div class="basis-1/4">
+      {{user.roleId}}
+    </div>
+    <div class="basis-1/4">{{ user.fullName}}</div>
+    <div class="basis-1/4">{{ user.email}}</div>
+    <div class="basis-1/4">
+      @button({href: '/modify', class: 'rounded-b-none', id: user.id })
+      Modify
+      @end
+    </div>
+    @end
+  </div> --}}
+
+  <table>
+    <thead>
+      <tr>
+        <th>Role</th>
+        <th>Full name</th>
+        <th>Email</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr id="user_table">
+        
+      </tr>
+
+    </tbody>
+  </table>
+  {{-- @each (movie in movies)
   <div class="w-full lg:w-1/3 px-3">
     @!movie.card({ movie, class: 'w-full', stateExample})
   </div>
-  @endeach
+  @endeach --}}
   <div class="w-full lg:w-1/3 px-3">
 
     {{-- <ul class="list">
@@ -27,11 +110,15 @@
 
 <div class="fixed bottom-0 right-3 flex gap-3">
 
-  @button({href: '/test', class: 'rounded-b-none', id: 'flush'})
+  @button({href: '/flush', class: 'rounded-b-none', id: 'flush'})
   Flush button
   @end
 
   <button id="add_film">Aggiungi film</button>
+
+  @button({href: '/', class: 'rounded-b-none', id: 'view_users'})
+  View Users
+  @end
 </div>
 
 <script>
@@ -47,11 +134,80 @@
     // load_film()
   });
 
+  $('#view_users').on('click', function (e) {
+    e.preventDefault();
+    load_users()
+  });
+
+  $('#add_user').on('click', function (e) {
+    e.preventDefault();
+    add_user($('#add_user_form').serialize())
+  });
+
+  $('.modify').on('click', function () {
+    const name = $(this).closest('tr').find('input[name="fullName"]').val();
+    const id = $(this).data('id');
+    const email = $(this).closest('tr').find('input[name="email"]').val();
+    console.log(name, id, email);
+    const userData = {
+      id: id,
+      fullName: name,
+      email: email,
+    };
+    console.log(JSON.stringify(userData));
+  });
+
+
   function load_film() {
     $.get('/flush', function (data) {
       for (const element of data) {
         $('.list').append(`<li>${element.title}</li>`);
       }
+    })
+  }
+
+  function load_users() {
+    $.get('/user', function (data) {
+      for (const element of data) {
+        console.log(element);
+        const role = element.roleId === 1 ? 'Admin' : 'User';
+
+
+        $('#user_table').append(`
+        <td>
+          <input type="text" value="${element.roleId}" readonly>
+        </td>
+        <td>
+          <input type="text" name="fullName" value="${element.fullName}">
+        </td>
+        <td>
+          <input type="text" name="email" readonly value="${element.email}">
+        </td>
+        <td>`
+          @button({class: 'rounded-b-none modify', dataid: ${element.id} , id: 'user_' + ${element.id}})
+          `Modify`
+          @end
+        `</td>
+        `);
+      }
+    })
+  }
+
+  function add_user(form_data) {
+    //invii al server formdata e te li stampi
+    $.ajax({
+      url: '/user',
+      type: 'POST',
+      data: form_data,
+    });
+
+    $('#user_table').empty();
+    load_users()
+  }
+
+  function log_users(id) {
+    $.get('/user', function (data) {
+      console.log(data);
     })
   }
 

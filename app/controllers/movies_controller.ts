@@ -10,7 +10,7 @@ export default class MoviesController {
 
   async show({ view, params }: HttpContext) {
     const movie = await Movie.findByOrFail( 'slug', params.slug)
-
+    console.log(movie)
     return view.render('pages/movies/show', { movie })
   }
 

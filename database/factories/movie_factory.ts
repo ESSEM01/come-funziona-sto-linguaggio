@@ -13,7 +13,7 @@ export const MovieFactory = factory
       summary: faker.lorem.sentence(),
       abstract: faker.lorem.paragraph(),
       posterUrl: faker.image.urlPicsumPhotos(),
-      releasedAt: null,
+      releaseAt: null,
     }
   })
   .build()

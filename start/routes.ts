@@ -8,9 +8,11 @@
 */
 
 import router from '@adonisjs/core/services/router'
-const MoviesController = () => import('#controllers/movies_controller') 
+const HomeController = () => import('#controllers/home_controller')
+const MoviesController = () => import('#controllers/movies_controller')
+const UsersController = () => import('#controllers/users_controller')
 
-router.get('/', [MoviesController, 'index']).as('home')
+router.get('/', [HomeController, 'index']).as('home')
 
 router
     .get('/movies/:slug', [MoviesController, 'show'])
@@ -18,6 +20,8 @@ router
     .where('slug', router.matchers.slug())
 
     router.get('/flush', [MoviesController, 'flushCache'])
+    router.get('/user', [HomeController, 'viewUsers'])
+    router.post('/user', [HomeController, 'addUser'])
 // router.get('/movies', () => {}).as('movies.index')
 // router.get('/movies/single-movie', () => {}).as('movies.show')
 // router.get('/movies/create', () => {}).as('movies.create')
