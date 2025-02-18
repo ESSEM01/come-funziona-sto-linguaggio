@@ -20,9 +20,14 @@
           <div class="sm:col-span-3">
             <label for="first-name" class="block text-sm/6 font-medium text-gray-900">Role id</label>
             <div class="mt-2">
-              <input type="number" name="roleId" id="first-name"
-                class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
-            </div>
+                <select name="roleId" id="role_id">
+                  <option disabled>Seleziona</option>
+              
+                  @each( role in roles)
+                    <option value="{{role.id}}">{{role.name}}</option>
+                  @endeach
+                </select>
+              </div>
           </div>
 
           <div class="sm:col-span-3">
@@ -78,36 +83,25 @@
     @end
   </div> --}}
 
-  <table>
-    <thead>
-      <tr>
-        <th>Role</th>
-        <th>Full name</th>
-        <th>Email</th>
-      </tr>
-    </thead>
-    <tbody id="user_table">
-      {{-- @each(user in users)
-      <tr>
-        <td>
-          <input type="text" value="{{user.roleId}}" readonly>
-        </td>
-        <td>
-          <input type="text" name="fullName" value="{{user.fullName}}">
-        </td>
-        <td>
-          <input type="text" name="email" readonly value="{{ user.email}}">
-        </td>
-        <td>
-          <button class="p-5 modify" data-id="{{user.id}}" id="user_{{user.id}}">
-            Modify
-          </button>
-        </td>
-      </tr>
-      @end --}}
+ 
 
-    </tbody>
-  </table>
+
+
+
+  <div class="flex flex-row flex-wrap basis-full mb-10" id="user_table">
+    <div class="basis-1/5">
+      Role
+    </div>
+    <div class="basis-1/5">Full name</div>
+    <div class="basis-1/5">Email</div>
+    <div class="basis-1/5">
+      Modify
+    </div>
+    <div class="basis-1/5">
+      Delete
+    </div>
+
+  </div>
   {{-- @each (movie in movies)
   <div class="w-full lg:w-1/3 px-3">
     @!movie.card({ movie, class: 'w-full', stateExample})
@@ -159,9 +153,26 @@
     add_user($('#add_user_form').serialize())
   });
 
-  $(document).on('click', '.modify', function (e) {
+  $(document).on('click', '.modify', async function (e) {
     e.preventDefault();
-    mod_user($('#mod_user_form').serialize())
+    var form = $(this).closest('form');
+    var form_data = form.serialize();
+    var id = $(this).data('id');
+    await mod_user(form_data, id);
+
+    load_users();
+
+  });
+
+  $(document).on('click', '.delete', async function (e) {
+    e.preventDefault();
+    var form = $(this).closest('form');
+    var form_data = form.serialize();
+    var id = $(this).data('id');
+    await del_user(form_data, id);
+
+    load_users();
+
   });
 
 
@@ -173,31 +184,37 @@
     })
   }
 
-  async function load_users() {
+  function load_users() {
     $.get('/user', function (data) {
+      $('#user_table').empty();
+
       for (const element of data) {
         const role = element.roleId === 1 ? 'Admin' : 'User';
 
 
         $('#user_table').append(`
-          <tr>
-            <form action="/user" method="GET" id="mod_user_form">
-            <td>
-              <input type="text" value="${element.roleId}" readonly>
-            </td>
-            <td>
-              <input type="text" name="fullName" value="${element.fullName}">
-            </td>
-            <td>
-              <input type="text" name="email" readonly value="${element.email}">
-            </td>
-            <td>
-              <button type="submit" class="p-5 modify" data-id="${element.id}" id="user_${element.id}">
-                Modify
-              </button>
-            </td>
-          </form>
-        </tr>
+            <form action="/user/${element.id}" method="POST" class="flex flex-row flex-wrap basis-full mb-10">
+              <div class="basis-1/5">
+                <input type="text" value="${element.roleId}" readonly>
+              </div>
+              <div class="basis-1/5">
+                <input type="text" name="fullName" value="${element.fullName}">
+              </div>
+              <div class="basis-1/5">
+                <input type="text" name="email" readonly value="${element.email}">
+              </div>
+              <div class="basis-1/5">
+                <button type="submit" class="p-5 modify" data-id="${element.id}" id="user_${element.id}">
+                  Modify
+                </button>
+              </div>
+              <div class="basis-1/5">
+                <button type="submit" class="p-5 delete" data-id="${element.id}" id="user_${element.id}">
+                  Delete
+                </button>
+              </div>
+            </form>
+          </tr>
         `);
       }
     })
@@ -209,23 +226,36 @@
       url: '/user',
       type: 'POST',
       data: form_data,
+      success: function (data) {
+        console.log(data);
+        load_users();
+      }
     });
 
-
-    $('#user_table').empty();
-    load_users();
 
   }
 
-  function mod_user(form_data) {
+  async function mod_user(form_data, id) {
+    console.log(form_data);
     $.ajax({
-      url: '/user',
       type: 'PUT',
+      url: '/user/' + id,
       data: form_data,
     });
-
-    $('#user_table').empty();
     load_users();
+  };
+
+  async function del_user(form_data, id) {
+    console.log(form_data);
+    $.ajax({
+      type: 'DELETE',
+      url: '/user/' + id,
+      data: form_data,
+      success: function (data) {
+        load_users();
+      }
+    });
+
   };
 
   function log_users(id) {
@@ -237,4 +267,3 @@
 </script>
 
 @end
-
