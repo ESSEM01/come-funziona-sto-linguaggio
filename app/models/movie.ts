@@ -31,8 +31,8 @@ export default class Movie extends BaseModel {
   @column()
   declare posterUrl: string
 
-  @column()
-  declare releasedAt: string
+  @column.dateTime()
+  declare releasedAt: DateTime
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
