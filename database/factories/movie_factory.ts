@@ -12,7 +12,12 @@ export const MovieFactory = factory
 
       summary: faker.lorem.sentence(),
       abstract: faker.lorem.paragraph(),
-      posterUrl: faker.image.urlPicsumPhotos(),
+      posterUrl: faker.image.urlPicsumPhotos(
+        {
+          width: 200,
+          height: 200,
+        }
+      ),
     }
   })
   .state('released', (row, {faker}) => {
