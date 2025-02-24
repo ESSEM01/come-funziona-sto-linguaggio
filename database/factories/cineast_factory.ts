@@ -12,4 +12,6 @@ export const CineastFactory = factory
   })
   .relation('moviesDirector', () => MovieFactory)
   .relation('moviesWritten', () => MovieFactory)
+  .relation('castMovies', () => MovieFactory)
+  .relation('crewMovies', () => MovieFactory)
   .build()
